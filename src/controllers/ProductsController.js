@@ -1,5 +1,4 @@
 const knex = require("../database/knex");
-// const sqliteConnection = require("../database/sqlite")
 const DiskStorage = require("../providers/DiskStorage");
 
 class ProductsController {
@@ -75,8 +74,7 @@ class ProductsController {
             throw new AppError("Somente usuários autenticadas podem mudar a foto do produto", 401);
         }
 
-        const product = await knex("products")
-            .where({ id: product_id }).first();
+        const product = await knex("products").where({ id: product_id }).first();
 
         if (product.picture) {
             await diskStorage.deleteFile(product.picture);
@@ -87,25 +85,12 @@ class ProductsController {
 
         await knex("products").update(product).where({ id: product_id });
 
-        return res.json(user)
+        return res.json(user);
     }
-
-    // async show(req, res){
-    //     const {id} = req.params;
-
-    //     const movie_notes = await knex("movie_notes").where({id}).first();
-    //     const movie_tags = await knex("movie_tags").where({movie_notes_id : id}).orderBy("tag_name");
-
-    //     return res.json({
-    //         ...movie_notes,
-    //         movie_tags
-    //     });
-    // }
 
     async delete(req, res){
         const {id} = req.params;
 
-        // await knex.raw('PRAGMA foreign_keys = ON');
         await knex("products").where({id}).delete();
 
         return res.json();
@@ -147,12 +132,12 @@ class ProductsController {
                     ingredients: ingredientsTags
                 }
             });
+            
             return res.json(productWithTags[0]);
         }
         else {
             products = await knex("products")
                 .whereLike("name", `%${name}%`)
-                // .where({id})
                 .orderBy("groupProduct")
                 .orderBy("name");
 
@@ -165,12 +150,10 @@ class ProductsController {
                     ingredients: ingredientsTags
                 }
             });
+
             return res.json(productWithTags);
         }
-
-
     }
-
 }
 
 module.exports = ProductsController;

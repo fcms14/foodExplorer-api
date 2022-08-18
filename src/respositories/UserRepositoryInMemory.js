@@ -5,7 +5,6 @@ class UserRepositoryInMemory {
         return this.users.find(user => user.email === email);
     }
 
-
     async create({ email, name, password }){
         const user = {
             id: Math.floor(Math.random() * 1000) + 1,

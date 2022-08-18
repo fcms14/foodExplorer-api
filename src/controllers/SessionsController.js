@@ -14,19 +14,19 @@ class SessionsController {
             throw new AppError("E-mail e/ou senha incorreta", 401);
         }
 
-        const passwordMatched = await compare(password, user.password)
+        const passwordMatched = await compare(password, user.password);
 
         if (!passwordMatched){
-            throw new AppError("E-mail e ou senha incorreta", 401)
+            throw new AppError("E-mail e ou senha incorreta", 401);
         }
 
         const { secret, expiresIn} = authConfig.jwt;
         const token = sign({}, secret, {
             subject: String(user.id),
             expiresIn
-        })
+        });
 
-        return resp.json({ user, token })
+        return resp.json({ user, token });
     }
 
     async isAdmin(req, resp){
@@ -41,16 +41,16 @@ class SessionsController {
         const passwordMatched = password == user.password;
 
         if (!passwordMatched){
-            throw new AppError("E-mail e ou senha incorreta", 401)
+            throw new AppError("E-mail e ou senha incorreta", 401);
         }
 
         const { secret, expiresIn} = authConfig.jwt;
         const token = sign({}, secret, {
             subject: String(user.id),
             expiresIn
-        })
+        });
 
-        return resp.json({ user, token })
+        return resp.json({ user, token });
     }
 }
 
